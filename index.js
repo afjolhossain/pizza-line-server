@@ -12,7 +12,11 @@ const port = process.env.PORT || 5000;
 // userPass: lvUDAHDEfANZ6lQS;
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: [
+      "http://localhost:5173",
+      "https://pizza-line-3a93f.web.app/",
+      "https://pizza-line-3a93f.firebaseapp.com/",
+    ],
     credentials: true,
   })
 );
@@ -52,7 +56,6 @@ async function run() {
   try {
     const productCollection = client.db("Pizza-Line").collection("products");
     const userCollection = client.db("Pizza-Line").collection("user");
-    const reviewsCollection = client.db("Pizza-Line").collection("reviews");
     const bookingCollection = client.db("Pizza-Line").collection("booking");
     const contactCollection = client
       .db("Pizza-Line")
@@ -67,7 +70,8 @@ async function run() {
       res
         .cookie("token", token, {
           httpOnly: true,
-          secure: false,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         })
         .send({ success: true });
     });
@@ -76,7 +80,8 @@ async function run() {
       res
         .clearCookie("token", {
           httpOnly: true,
-          secure: false,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         })
         .send({ success: true });
     });
