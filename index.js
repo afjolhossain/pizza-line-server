@@ -86,6 +86,26 @@ async function run() {
         .send({ success: true });
     });
 
+    // products related API :
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await productCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.get("/products", async (req, res) => {
+      const cursor = productCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.post("/products", async (req, res) => {
+      const newProducts = req.body;
+      const result = await productCollection.insertOne(newProducts);
+      res.send(result);
+    });
+
     app.get("/user", verifyToken, async (req, res) => {
       const email = req.query.email;
       const query = { user_email: email };
@@ -190,25 +210,6 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await productCollection.findOne(query);
-      res.send(result);
-    });
-    // products related API :
-    app.get("/products/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await productCollection.findOne(query);
-      res.send(result);
-    });
-
-    app.get("/products", async (req, res) => {
-      const cursor = productCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    });
-
-    app.post("/products", async (req, res) => {
-      const newProducts = req.body;
-      const result = await productCollection.insertOne(newProducts);
       res.send(result);
     });
 
