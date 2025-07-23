@@ -14,8 +14,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://pizza-line-3a93f.web.app/",
-      "https://pizza-line-3a93f.firebaseapp.com/",
+      "https://pizza-line-3a93f.web.app",
+      "https://pizza-line-3a93f.firebaseapp.com",
     ],
     credentials: true,
   })
